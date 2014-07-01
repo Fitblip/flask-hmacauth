@@ -16,9 +16,9 @@ import datetime
 import urlparse
 
 #simple macros where x is a request object
-GET_TIMESTAMP = lambda x: x.values.get('TIMESTAMP')
-GET_ACCOUNT   = lambda x: x.values.get('ACCOUNT_ID')
-GET_SIGNATURE = lambda x: x.headers.get('X-Auth-Signature')
+GET_TIMESTAMP = lambda request_obj: request_obj.values.get('TIMESTAMP')
+GET_ACCOUNT   = lambda request_obj: request_obj.values.get('ACCOUNT_ID')
+GET_SIGNATURE = lambda request_obj: request_obj.headers.get('X-Auth-Signature')
 
 
 class HmacManager(object):
