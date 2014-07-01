@@ -17,7 +17,7 @@ import urlparse
 
 #simple macros where x is a request object
 GET_TIMESTAMP = lambda x: x.values.get('TIMESTAMP')
-GET_ACCOUNT = lambda x: x.values.get('ACCOUNT_ID')
+GET_ACCOUNT   = lambda x: x.values.get('ACCOUNT_ID')
 GET_SIGNATURE = lambda x: x.headers.get('X-Auth-Signature')
 
 
@@ -42,12 +42,12 @@ class HmacManager(object):
         :param digest hashlib hash :type to be used in the signature (default sha1)
         """
 
-        self._account_id = account_id
-        self._signature = signature
-        self._timestamp = timestamp
+        self._account_id     = account_id
+        self._signature      = signature
+        self._timestamp      = timestamp
         self._account_broker = account_broker
-        self._valid_time = valid_time
-        self._digest = digest
+        self._valid_time     = valid_time
+        self._digest         = digest
 
         if app is not None:
             self.init_app(app)
@@ -143,6 +143,7 @@ class DictAccountBroker(object):
     is_active(account_id) - returns True if account_id is active (for whatever definition you want
         to define for active), otherwise returns False.
     """
+
     def __init__(self, accounts=None):
         if accounts is None:
             self.accounts = {}
