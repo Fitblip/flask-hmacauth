@@ -14,6 +14,8 @@ import hmac
 import hashlib
 import datetime
 import urlparse
+import random
+import string
 
 #simple macros where x is a request object
 GET_TIMESTAMP = lambda request_obj: request_obj.values.get('TIMESTAMP')
@@ -139,6 +141,14 @@ class BaseAccountBroker(object):
         # if the account does not exist.
         raise NotImplementedError("You need to define an has_rights method on your class!")
 
+    @staticmethod
+    def generate_secret_key():
+        # Helper to generate good secret keys (32 characther alnum)
+        secret_key = ""
+        for i in range(32):
+            secret_key += random.choice(string.ascii_letters + string.digits)
+        return secret_key
+
     def __repr__(self):
         return "<%s>" % (self.__class__.__name__)
 
@@ -165,6 +175,7 @@ class DictAccountBroker(BaseAccountBroker):
     """
 
     def __init__(self, accounts=None):
+        super(DictAccountBroker, self).__init__()
         if accounts is None:
             self.accounts = {}
         else:
@@ -204,12 +215,16 @@ class DictAccountBroker(BaseAccountBroker):
         return False
 
 
-class StaticAccountBroker(object):
+class StaticAccountBroker(BaseAccountBroker):
+    """
+        A very basic account broker example. Only checks against one secret, with no account names or roles
+    """
 
     #TODO: this doesn't work?
     GET_ACCOUNT = lambda x: "dummy"
 
     def __init__(self, secret=None):
+        super(StaticAccountBroker, self).__init__()
         if secret is None:
             raise ValueError("you must provide a value for 'secret'")
         self._secret = secret
