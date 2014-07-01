@@ -121,8 +121,28 @@ class HmacManager(object):
 
         return True
 
+class BaseAccountBroker(object):
+    def __init__(self):
+        pass
 
-class DictAccountBroker(object):
+    def is_active(self, account):
+        # returns True if account_id is active (for whatever definition you want
+        # to define for active), otherwise returns False.
+        raise NotImplementedError("You need to define an is_active method on your class!")
+
+    def get_secret(self, account):
+        # returns a string secret given an account ID.  If the account does not exist, returns None
+        raise NotImplementedError("You need to define an get_secret method on your class!")
+
+    def has_rights(self, account, rights):
+        # returns True if account_id has all of the rights in the list rights, otherwise returns False.  Returns False
+        # if the account does not exist.
+        raise NotImplementedError("You need to define an has_rights method on your class!")
+
+    def __repr__(self):
+        return "<%s>" % (self.__class__.__name__)
+
+class DictAccountBroker(BaseAccountBroker):
     """
     Default minimal implementation of an AccountBroker.  This implementation maintains
     a dict in memory with structure:
